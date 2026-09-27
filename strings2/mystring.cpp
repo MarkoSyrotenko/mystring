@@ -41,6 +41,7 @@ public:
         cout << "string deleted\n";
         count--;
     }
+    //-----------------
     void Print()
     {
         cout << text << endl;
@@ -52,10 +53,19 @@ public:
         text = new char[size + 1];
         strcpy_s(text, size + 1, t);
     }
+    char* GetString()
+    {
+        return text;
+    }
     static int GetCount()
     {
         return count;
     }
+    void SetSize(int s)
+    {
+        size = s;
+    }
+    //------------
     MyString operator *(MyString s)
     {
         char* txt;
@@ -188,7 +198,7 @@ public:
     void Input()
     {
         char* input;
-        input = new char[1000];
+        input = new char[500];
         cout << "enter a string:\n";
         cin >> input;
         size = strlen(input);
@@ -201,10 +211,24 @@ public:
 };
 
 int MyString::count = 0;
+//перегрузка ввода вывода
+ostream& operator<< (ostream& os, MyString& str)
+{
+    os << str.GetString() << endl;
+    return os;
+}
+istream& operator>> (istream& is, MyString& str)
+{
+    char* input;
+    input = new char[500];
+    is >> input;
+    str.SetText(input);
+    delete[] input;
+    return is;
+}
 
 int main()
 {
-
     MyString str1;
     MyString str2;
     str1.Input();
@@ -230,6 +254,12 @@ int main()
     str3.Print();
     cout << str1.MyStrCmp(str2) << endl;
     cout << str1.GetCount();
+
+    //перегрузка ввода вывода
+    MyString str4;
+    cout << "\ninput text: ";
+    cin >> str4;
+    cout << str4;
 
     cout << endl;
 }
